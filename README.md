@@ -7,5 +7,5 @@ gfortran -Wall solvejumble.f95 lexicon.f95
 
 To run the program:
 ```console
-./a
+./a.out
 ```
