@@ -23,9 +23,10 @@ module lexicon
         end do
     end subroutine hashfunction
 
-    subroutine buildlexicon()
+    subroutine buildlexicon(fileError)
         implicit none
 
+        integer, intent(out) :: fileError
         character (len=50) :: fname
         logical :: lexist
         integer :: numProbed = 0
@@ -62,8 +63,6 @@ module lexicon
             DO WHILE(1.EQ.1)
                 numProbed = 0
                 READ(9, *, END=200) dictWord
-                !print '(A30)', dictWord
-
 
                 ! hash
                 hash = 5381
@@ -86,7 +85,8 @@ module lexicon
 
             200 CONTINUE
         else
-            write (*,*) 'File does not exist - abort'
+            write(*, fmt="(a)") trim('File does not exist. Aborting...')
+            fileError = 1
             return
         end if
 

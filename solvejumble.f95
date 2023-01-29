@@ -139,12 +139,18 @@ program solvejumble
     character (len=15) :: str
     character (len=15) :: jumbledWord
     integer :: jumbledWordSize
+    integer :: fileError
 
     jumbledWord = ""
     jumbledWordSize = 0
     wordResListSize = 0
+    fileError = 0
 
-    call buildlexicon()
+    call buildlexicon(fileError)
+
+    if (fileError.EQ.1) then
+        return
+    end if
 
     call inputJumble(numJumbledWords, words)
 
