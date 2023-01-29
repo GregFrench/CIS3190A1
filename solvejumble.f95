@@ -1,3 +1,27 @@
+! Convert an uppercase character to lowercase 
+subroutine to_lower(c)
+    character, intent(out) :: c
+    integer :: charAscii
+    
+    charAscii = ichar(c)
+    
+    if (charAscii >= 65.and.charAscii <= 90) then
+        c = char(charAscii+32)
+    end if
+end subroutine to_lower
+
+! Convert a lowercase character to uppercase 
+subroutine to_upper(c)
+    character, intent(out) :: c
+    integer :: charAscii
+    
+    charAscii = ichar(c)
+    
+    if (charAscii >= 97.and.charAscii <= 122) then
+        c = char(charAscii-32)
+    end if
+end subroutine to_upper
+
 subroutine inputJumble(numJumbledWords, words)
     implicit none
 
@@ -7,6 +31,7 @@ subroutine inputJumble(numJumbledWords, words)
 
     ! Declare local variables
     integer :: i
+    integer :: j
     character (len=15) :: str
 
     write(*, fmt="(A24)", advance="no") "How many jumbled words? "
@@ -20,6 +45,11 @@ subroutine inputJumble(numJumbledWords, words)
     do i = 1, numJumbledWords
         write(*, fmt="(A2)", advance="no") "> "
         read (*,*) str
+
+        do j = 1, 15
+            call to_lower(str(j:j))
+        end do
+
         words(i) = str
     end do
 
@@ -137,7 +167,15 @@ program solvejumble
             end if
         end do
 
-        write(*, fmt="(A15)", advance="no") words(i)
+        do j = 1, 15
+            call to_upper(word(j:j))
+        end do
+
+        write(*, fmt="(A15)", advance="no") word
+
+        do j = 1, 15
+            call to_lower(word(j:j))
+        end do
 
         call generateAnagram(word, wordSize, curr, currSize, wordList, wordListSize, chosen)
         call findAnagram(wordList, wordListSize, wordResList, wordResListSize)
