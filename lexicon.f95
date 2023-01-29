@@ -33,7 +33,8 @@ module lexicon
         integer :: hash = 0
         integer :: i = 0
 
-        write (*,*) 'Enter the file name: '
+        write(*, fmt="(A20)") "Enter the file name:"
+
         read (*,'(A)') fname
 
         inquire(file=fname, exist=lexist)
