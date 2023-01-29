@@ -34,9 +34,11 @@ module lexicon
         integer :: hash = 0
         integer :: i = 0
 
-        write(*, fmt="(A20)") "Enter the file name:"
+        write(*, fmt="(a)") "Enter the file name of the dictionary:"
 
         read (*,'(A)') fname
+
+        write(*, fmt="(a)") " "
 
         inquire(file=fname, exist=lexist)
 
