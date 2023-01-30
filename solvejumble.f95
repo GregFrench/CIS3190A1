@@ -1,5 +1,7 @@
 ! Convert an uppercase character to lowercase 
 subroutine to_lower(c)
+    implicit none
+
     character, intent(out) :: c
     integer :: charAscii
     
@@ -12,6 +14,8 @@ end subroutine to_lower
 
 ! Convert a lowercase character to uppercase 
 subroutine to_upper(c)
+    implicit none
+
     character, intent(out) :: c
     integer :: charAscii
     
@@ -21,6 +25,21 @@ subroutine to_upper(c)
         c = char(charAscii-32)
     end if
 end subroutine to_upper
+
+! Gets the length of a word
+subroutine wordLen(word, len)
+    implicit none
+
+    character (len=15), intent(in) :: word
+    integer, intent(out) :: len
+    integer :: i
+    
+    do i = 1, 15
+        if (word(i:i).NE." ") then
+            len = len + 1
+        end if
+    end do
+end subroutine wordLen
 
 subroutine inputJumble(numJumbledWords, words)
     implicit none
@@ -59,6 +78,7 @@ subroutine inputJumble(numJumbledWords, words)
 end subroutine inputJumble
 
 recursive subroutine generateAnagram(word, wordSize, curr, currSize, wordList, wordListSize, chosen)
+    ! Declare calling parameter types and definitions
     character (len=15), intent(in) :: word
     integer, intent(in) :: wordSize
     character (len=15), intent(out) :: curr
@@ -66,6 +86,8 @@ recursive subroutine generateAnagram(word, wordSize, curr, currSize, wordList, w
     character (len=15), intent(out) :: wordList(10000)
     integer, intent(out) :: wordListSize
     integer, intent(out) :: chosen(15)
+
+    ! Declare local variables
     integer :: i
 
     if (wordSize.EQ.currSize) THEN
@@ -129,7 +151,7 @@ program solvejumble
     integer :: wordSize
     character (len=15) :: curr
     integer :: currSize
-    character (len=15) :: wordList(10000)
+    character (len=15), allocatable :: wordList(:)
     integer :: wordListSize
     character (len=15) :: wordResList(2000)
     integer :: wordResListSize
@@ -140,11 +162,17 @@ program solvejumble
     character (len=15) :: jumbledWord
     integer :: jumbledWordSize
     integer :: fileError
+    integer :: len
+    integer :: longestWord
+    integer :: factorial
 
     jumbledWord = ""
     jumbledWordSize = 0
     wordResListSize = 0
     fileError = 0
+    len = 0
+    longestWord = 0
+    factorial = 1
 
     call buildlexicon(fileError)
 
@@ -153,6 +181,20 @@ program solvejumble
     end if
 
     call inputJumble(numJumbledWords, words)
+
+    do i = 1, numJumbledWords
+        call wordLen(words(i), len)
+
+        if (len.GT.longestWord) then
+            longestWord = len
+        end if
+    end do
+
+    do i = 1, longestWord
+        factorial = i * factorial
+    end do
+
+    allocate (wordList(factorial))
 
     write(*, fmt="(A39)") "The following jumbles have been solved:"
 
@@ -222,5 +264,7 @@ program solvejumble
 
     call generateAnagram(word, wordSize, curr, currSize, wordList, wordListSize, chosen)
     call findAnagram(wordList, wordListSize, wordResList, wordResListSize)
+
+    deallocate (wordList)
 
 end program solvejumble
