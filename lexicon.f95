@@ -1,3 +1,8 @@
+! File name: lexicon.f95
+! Author: Greg French (1084574)
+! Date last modified: February 04, 2023
+! Purpose: A module that provides helper subroutines for the solvejumble program
+
 module lexicon
     implicit none
     
