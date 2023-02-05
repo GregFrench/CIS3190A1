@@ -209,6 +209,8 @@ program solvejumble
 
     ! compute the longest word in the word list
     do i = 1, numJumbledWords
+        len = 0
+
         call wordLen(words(i), len)
 
         if (len.GT.longestWord) then
