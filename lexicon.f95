@@ -32,23 +32,16 @@ module lexicon
         implicit none
 
         integer, intent(out) :: fileError
-        character (len=50) :: fname
         logical :: lexist
         integer :: numProbed = 0
         integer :: index = 0
         integer :: hash = 0
         integer :: i = 0
 
-        write(*, fmt="(a)") "Enter the file name of the dictionary:"
-
-        read (*,'(A)') fname
-
-        write(*, fmt="(a)") " "
-
-        inquire(file=fname, exist=lexist)
+        inquire(file='dict2.txt', exist=lexist)
 
         if (lexist) then
-            open(unit=9, file=fname, action='read')
+            open(unit=9, file='dict2.txt', action='read')
 
             DO WHILE(1.EQ.1)
                 READ(9, *, END=100) dictWord
@@ -65,7 +58,7 @@ module lexicon
                 hashTable(i) = ""
             end do
 
-            open(unit=9, file=fname, action='read')
+            open(unit=9, file='dict2.txt', action='read')
 
             DO WHILE(1.EQ.1)
                 numProbed = 0
