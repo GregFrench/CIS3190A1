@@ -186,6 +186,7 @@ program solvejumble
     integer :: len
     integer :: longestWord
     integer :: factorial
+    character (len=50) :: solvePuzzle
 
     ! initialize variables
     jumbledWord = ""
@@ -267,6 +268,20 @@ program solvejumble
     end do
 
     print '(A1)', ' '
+
+    write(*, fmt="(a)") "Solve word jumble puzzle?"
+
+    read (*,'(A)') solvePuzzle
+
+    do j = 1, 50
+        call to_lower(solvePuzzle(j:j))
+    end do
+
+    if (solvePuzzle(1:1).NE."y") then
+        return
+    end if
+
+    write(*, fmt="(a)") " "
 
     write(*, fmt="(A40)") "Select circled letters from word puzzle:"
 
