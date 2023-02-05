@@ -12,6 +12,20 @@ module lexicon
     integer :: capacity = 0
 
     contains
+    ! Convert an uppercase character to lowercase 
+    subroutine to_lower(c)
+        implicit none
+
+        character, intent(out) :: c
+        integer :: charAscii
+        
+        charAscii = ichar(c)
+        
+        if (charAscii >= 65.and.charAscii <= 90) then
+            c = char(charAscii+32)
+        end if
+    end subroutine to_lower
+
     ! String hash function for storing and retrieving words from the hash table
     subroutine hashfunction(dictWord, hash)
         character (len=15), intent(in) :: dictWord
@@ -43,6 +57,7 @@ module lexicon
         integer :: index = 0
         integer :: hash = 0
         integer :: i = 0
+        integer :: j = 0
 
         inquire(file='dict2.txt', exist=lexist)
 
@@ -73,6 +88,10 @@ module lexicon
             DO WHILE(1.EQ.1)
                 numProbed = 0
                 READ(9, *, END=200) dictWord
+
+                do j = 1, 15
+                    call to_lower(dictWord(j:j))
+                end do
 
                 ! call the hash function on the word
                 hash = 5381
