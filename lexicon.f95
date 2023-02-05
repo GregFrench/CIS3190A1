@@ -109,12 +109,13 @@ module lexicon
     end subroutine buildlexicon
 
     ! find if a word exists in the hash table
-    subroutine findlex(searchWord, wordFound, seen, seenLen)
+    subroutine findlex(searchWord, wordFound, wasSeen, seen, seenLen)
         implicit none
 
         ! Declare calling parameter types and definitions
         character (len=15), intent(in) :: searchWord
         integer, intent(out) :: wordFound
+        integer, intent(out) :: wasSeen
         character (len=15), intent(out) :: seen(1000)
         integer, intent(out) :: seenLen
 
@@ -122,7 +123,6 @@ module lexicon
         integer :: numProbed
         integer :: index
         integer :: hash
-        integer :: wasSeen
         integer :: i
 
         wasSeen = 0

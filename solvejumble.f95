@@ -135,14 +135,16 @@ subroutine findAnagram(wordList, wordListSize, wordResList, wordResListSize)
     integer :: i
     integer :: wordFound
     integer :: seenLen
+    integer :: wasSeen
 
     wordFound = 0
     seenLen = 0
+    wasSeen = 0
 
     ! iterate through all words
     do i = 1, wordListSize
         ! check if the word exists in the dictionary
-        call findlex(wordList(i), wordFound, seen, seenLen)
+        call findlex(wordList(i), wordFound, wasSeen, seen, seenLen)
 
         ! if the word exists in the dictionary and is not a duplicate
         ! of a word seen previously, print it to stdout
