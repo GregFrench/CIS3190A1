@@ -12,9 +12,6 @@ To run the program:
 
 The following is sample input that demonstrates how to use the program:
 ```console
-Enter the file name of the dictionary:
-words.txt
- 
 How many jumbled words? 4
  
 Enter the 4 jumbled words:
@@ -25,10 +22,13 @@ Enter the 4 jumbled words:
  
 The following jumbles have been solved:
 MIRGE          grime           
-CHENB          bench           
-ADEZMA         amazed          
-PEXDEN         expend          
- 
+CHENB          bench
+ADEZMA         amazed
+PEXDEN         expend
+
+Solve word jumble puzzle?
+Y
+
 Select circled letters from word puzzle:
 grime: g i
 bench: b
