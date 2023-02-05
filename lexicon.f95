@@ -6,11 +6,13 @@
 module lexicon
     implicit none
     
+    ! Declare local module variables
     character (len=15), allocatable :: hashTable(:)
     character (len=15) :: dictWord
     integer :: capacity = 0
 
     contains
+    ! String hash function for storing and retrieving words from the hash table
     subroutine hashfunction(dictWord, hash)
         character (len=15), intent(in) :: dictWord
         integer, intent(out) :: hash
@@ -28,10 +30,14 @@ module lexicon
         end do
     end subroutine hashfunction
 
+    ! intializes the hash table with words from the input dictionary
     subroutine buildlexicon(fileError)
         implicit none
 
+        ! Declare calling parameter types and definitions
         integer, intent(out) :: fileError
+
+        ! Declare local variables
         logical :: lexist
         integer :: numProbed = 0
         integer :: index = 0
@@ -40,9 +46,11 @@ module lexicon
 
         inquire(file='dict2.txt', exist=lexist)
 
+        ! check if the file exists
         if (lexist) then
             open(unit=9, file='dict2.txt', action='read')
 
+            ! calculate the total number of lines in the file
             DO WHILE(1.EQ.1)
                 READ(9, *, END=100) dictWord
                 capacity = capacity + 1
@@ -52,6 +60,7 @@ module lexicon
 
             close (9)
 
+            ! allocate enough memory to store all the words
             allocate (hashTable(capacity))
 
             do i = 1, capacity
@@ -60,16 +69,19 @@ module lexicon
 
             open(unit=9, file='dict2.txt', action='read')
 
+            ! store all words from the dictionary using linear probing to find open spots
             DO WHILE(1.EQ.1)
                 numProbed = 0
                 READ(9, *, END=200) dictWord
 
-                ! hash
+                ! call the hash function on the word
                 hash = 5381
                 call hashfunction(dictWord, hash)
                 
                 index = hash
 
+                ! find an empty spot in the hash table starting at the
+                ! hashed index location for which to store the dictionary word
                 do while(numProbed.LT.capacity)
                     if (hashTable(index).EQ."") then
                         hashTable(index) = dictWord
@@ -85,6 +97,7 @@ module lexicon
 
             200 CONTINUE
         else
+            ! terminate program if an error occurs opening the file
             write(*, fmt="(a)") trim('File does not exist. Aborting...')
             fileError = 1
             return
@@ -95,14 +108,17 @@ module lexicon
         return
     end subroutine buildlexicon
 
+    ! find if a word exists in the hash table
     subroutine findlex(searchWord, wordFound, seen, seenLen)
         implicit none
 
+        ! Declare calling parameter types and definitions
         character (len=15), intent(in) :: searchWord
         integer, intent(out) :: wordFound
         character (len=15), intent(out) :: seen(1000)
         integer, intent(out) :: seenLen
 
+        ! Declare local variables
         integer :: numProbed
         integer :: index
         integer :: hash
@@ -129,6 +145,7 @@ module lexicon
             return
         end if
 
+        ! linear probing on the hash table to find if word exists
         do while(numProbed.LT.capacity)
             if (hashTable(index).NE."") then
                 if (hashTable(index) == searchWord) then
