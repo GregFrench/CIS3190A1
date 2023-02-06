@@ -75,7 +75,7 @@ subroutine inputJumble(numJumbledWords, words)
 end subroutine inputJumble
 
 ! Generates permutations of input word and stores each result in a dynamic array
-recursive subroutine generateAnagram(word, wordSize, curr, currSize, wordList, wordListSize, chosen)
+recursive subroutine generateAnagram(word, wordSize, curr, currSize, wordListMaxSize, wordList, wordListSize, chosen)
     implicit none
 
     ! Declare calling parameter types and definitions
@@ -83,7 +83,8 @@ recursive subroutine generateAnagram(word, wordSize, curr, currSize, wordList, w
     integer, intent(in) :: wordSize
     character (len=15), intent(out) :: curr
     integer, intent(out) :: currSize
-    character (len=15), intent(out) :: wordList(10000)
+    integer, intent(in) :: wordListMaxSize
+    character (len=15), intent(out) :: wordList(wordListMaxSize)
     integer, intent(out) :: wordListSize
     integer, intent(out) :: chosen(15)
 
@@ -101,7 +102,7 @@ recursive subroutine generateAnagram(word, wordSize, curr, currSize, wordList, w
             chosen(i) = 1
             curr(currSize+1:currSize+1) = word(i:i)
             currSize = currSize + 1
-            call generateAnagram(word, wordSize, curr, currSize, wordList, wordListSize, chosen)
+            call generateAnagram(word, wordSize, curr, currSize, wordListMaxSize, wordList, wordListSize, chosen)
             currSize = currSize - 1
             chosen(i) = 0
         end if
@@ -115,7 +116,7 @@ subroutine findAnagram(wordList, wordListSize, wordResList, wordResListSize)
     implicit none
 
     ! Declare calling parameter types and definitions
-    character (len=15), intent(in) :: wordList(10000)
+    character (len=15), intent(in) :: wordList(100000)
     integer, intent(in) :: wordListSize
     character (len=15), intent(out) :: wordResList(2000)
     integer, intent(out) :: wordResListSize
@@ -253,7 +254,7 @@ program solvejumble
         end do
 
         ! generate all permutations of the input word
-        call generateAnagram(word, wordSize, curr, currSize, wordList, wordListSize, chosen)
+        call generateAnagram(word, wordSize, curr, currSize, factorial, wordList, wordListSize, chosen)
 
         ! check if any of the permutations exist in the dictionary
         call findAnagram(wordList, wordListSize, wordResList, wordResListSize)
@@ -307,9 +308,20 @@ program solvejumble
     wordListSize = 0
     wordResListSize = 0
     curr = ''
+    factorial = 1
+
+    deallocate (wordList)
+
+    ! compute the factorial of the length of the jumbled word
+    do i = 1, jumbledWordSize
+        factorial = i * factorial
+    end do
+
+    ! using the factorial result, allocate the proper number
+    allocate (wordList(factorial))
 
     ! generate all permutations of the word made up of circled letters
-    call generateAnagram(word, wordSize, curr, currSize, wordList, wordListSize, chosen)
+    call generateAnagram(word, wordSize, curr, currSize, factorial, wordList, wordListSize, chosen)
     call findAnagram(wordList, wordListSize, wordResList, wordResListSize)
 
     deallocate (wordList)
