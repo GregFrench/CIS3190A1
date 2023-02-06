@@ -1,5 +1,10 @@
 # CIS*3190 A1
 
+Name: Greg French
+Student ID: 1084574
+
+Purpose of the program: A program written in Fortran that solves Word Jumble newspaper puzzles.
+
 To compile the program:
 ```console
 gfortran -Wall lexicon.f95 solvejumble.f95
