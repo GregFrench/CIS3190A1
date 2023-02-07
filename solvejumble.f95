@@ -325,5 +325,6 @@ program solvejumble
     call findAnagram(wordList, wordListSize, wordResList, wordResListSize)
 
     deallocate (wordList)
+    deallocate (hashTable)
 
 end program solvejumble

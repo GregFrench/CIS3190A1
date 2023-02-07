@@ -112,7 +112,7 @@ module lexicon
                     end if
 
                     index = index + 1
-                    index = modulo(index, capacity)
+                    index = modulo(index, capacity+1)
 
                     numProbed = numProbed + 1
                 end do
@@ -188,7 +188,7 @@ module lexicon
             end if
 
             index = index + 1
-            index = modulo(index, capacity)
+            index = modulo(index, capacity+1)
 
             numProbed = numProbed + 1
         end do
