@@ -76,7 +76,7 @@ module lexicon
             close (9)
 
             ! allocate enough memory to store all the words
-            allocate (hashTable(capacity))
+            allocate (hashTable(capacity+5))
 
             do i = 1, capacity
                 hashTable(i) = ""
@@ -102,6 +102,10 @@ module lexicon
                 ! find an empty spot in the hash table starting at the
                 ! hashed index location for which to store the dictionary word
                 do while(numProbed.LT.capacity)
+                    if (index.EQ.0) then
+                        index = index + 1
+                    end if
+
                     if (hashTable(index).EQ."") then
                         hashTable(index) = dictWord
                         exit
@@ -166,6 +170,10 @@ module lexicon
 
         ! linear probing on the hash table to find if word exists
         do while(numProbed.LT.capacity)
+            if (index.EQ.0) then
+                index = index + 1
+            end if
+
             if (hashTable(index).NE."") then
                 if (hashTable(index) == searchWord) then
                     wordFound = 1
