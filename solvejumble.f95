@@ -1,6 +1,6 @@
 ! File name: solvejumble.f95
 ! Author: Greg French (1084574)
-! Date last modified: February 04, 2023
+! Date last modified: February 06, 2023
 ! Purpose: A program that solves Word Jumble newspaper puzzles
 
 ! Convert a lowercase character to uppercase 
